@@ -1,0 +1,39 @@
+<app-navbar />
+<!-- Categories Menu -->
+<div class="w-full bg-white p-4 mt-16">
+    <h2 class="text-lg font-semibold mb-4">Shop By Categories</h2>
+    
+    <!-- grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 -->
+    <!-- Categories Grid -->
+    <div class="grid grid-cols-2 lg:flex gap-2 lg:items-center lg:justify-start">
+      <button
+        *ngFor="let category of categories"
+        (click)="selectCategory(category)"
+        [ngClass]="[
+          'lg:flex lg:items-center lg:justify-center lg:px-3 py-1 lg:gap-2 rounded-full transition-all duration-200 text-sm mx-2',
+          category.selected ? 'bg-green-600 text-white hover:bg-green-700' : 'border-2 border-green-600 text-green-600 hover:bg-green-50'
+        ]"
+      >
+        <!-- Category Icon -->
+        <span class="text-xl">{{ category.icon }}</span>
+        
+        <!-- Category Name -->
+        <span class="font-medium">{{ category.name }}</span>
+      </button>
+    </div>
+
+    <!-- Selected Categories Preview -->
+    <div class="mt-4 flex flex-wrap gap-2">
+      <div 
+        *ngFor="let category of selectedCategories"
+        class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium"
+      >
+        {{ category.name }}
+      </div>
+    </div>
+  </div>
+
+  <app-recently-listed />
+  <app-best-farmers />
+
+

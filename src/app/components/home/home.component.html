@@ -1,0 +1,22 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <h1 class="text-2xl font-semibold text-center mb-4">Let's Get Started On Your Journey</h1>
+    <p class="text-center text-gray-600 mb-6">Tell us who you are, so we can tailor your Farmers Market experience.</p>
+  
+    <div class="flex space-x-4 mb-6">
+      <!-- Farmer Card -->
+      <div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" [routerLink] = "['/farmer-login-signup']" >
+        <img src="farmer.png" class="mb-4 w-16 h-16" />
+        <h3 class="font-bold">I'm A Farmer</h3>
+        <p class="text-gray-500 text-sm">For those who grow the goodness.</p>
+      </div>
+  
+      <!-- Foodie Card -->
+      <div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" [routerLink]="['/user-login-signup']">
+        <img src="profile.png" class="mb-4 w-16 h-16">
+        <h3 class="font-bold">I'm A Foodie</h3>
+        <p class="text-gray-500 text-sm">For those who savor the goodness.</p>
+      </div>
+    </div>
+  </div>
+
+  

@@ -1,0 +1,57 @@
+
+
+<div [style.flex]="'0 0 ' + (100 / itemsPerView) + '%'" class="px-2">
+  <!-- Product Card -->
+  <div class="bg-white rounded-lg border p-3 hover:shadow-md transition-shadow cursor-pointer"
+    (click)="viewDetails(product.id)">
+    <!-- Image Container -->
+    <div class="relative aspect-square rounded-lg overflow-hidden mb-3">
+      <img [src]="product.image" [alt]="product.name" class=" lg:w-full lg:h-full">
+    </div>
+
+    <!-- Product Info -->
+    <div class="space-y-2">
+      <h3 class="text-sm text-gray-700 font-medium">{{ product.name }}</h3>
+
+      <div class="flex items-center justify-between">
+        <div class="text-sm font-semibold">
+          {{ product.price.toFixed(2) | currency : 'INR' }}/{{ product.unit }}
+        </div>
+
+        <!-- @if(isItemInCart){ -->
+          <!-- <div class="flex items-center bg-green-600 text-white rounded-lg px-2 py-1 gap-2">
+           
+            <button 
+              class="text-white w-2 h-2 flex justify-center items-center"
+              (click)="decrementQuantity($event)"
+            >
+              <span class="text-sm">-</span>
+            </button>
+          
+            
+            <div 
+              class="text-center font-semibold text-lg"
+            >
+              {{ quantity() }}
+            </div>
+          
+            <button 
+              class="text-white w-2 h-2 flex justify-center items-center"
+              (click)="incrementQuantity($event)"
+            >
+              <span class="text-sm">+</span>
+            </button>
+          </div> -->
+
+        <!-- }@else {      -->
+          <button class="bg-green-600 text-white px-2 rounded-lg hover:bg-green-700 transition-colors"
+            (click)="addToCart($event)">
+            <i class="fa-solid fa-plus text-sm"></i>
+          </button>
+        <!-- }    -->
+      </div>
+    </div>
+  </div>
+  
+</div>
+<app-toast />

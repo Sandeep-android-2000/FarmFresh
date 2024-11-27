@@ -1,0 +1,46 @@
+<div class="w-full p-4">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold">Recently Listed</h2>
+    </div>
+
+    <!-- Carousel Container -->
+    <div class="relative">
+      <!-- Previous Button -->
+
+      @if(currentIndex > 0){
+        <button 
+          (click)="prev()"
+          class="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
+        >
+        <i class="fa-solid fa-less-than"></i>
+        </button>
+      }
+
+      <!-- Products Wrapper -->
+      <div class="overflow-hidden">
+        <div 
+          class="flex transition-transform duration-300 ease-out"
+          [style.transform]="'translateX(-' + (currentIndex * 100 / itemsPerView) + '%)'"
+        >
+        @for(product of products;track product.id){
+            <app-product-card [product]="product"/>
+        }
+        </div>
+      </div>
+
+      <!-- Next Button -->
+
+      @if(currentIndex < maxIndex){
+        <button 
+          (click)="next()"
+          class="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
+        >
+        <i class="fa-solid fa-greater-than text-xs text"></i>
+        </button>
+      }
+    </div>
+  </div>
+
+
+

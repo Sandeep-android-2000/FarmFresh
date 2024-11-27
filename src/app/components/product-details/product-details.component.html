@@ -1,0 +1,70 @@
+<div class="max-w-4xl mx-auto lg:p-4 sm:p-6 md:p-8 bg-white rounded-lg shadow-lg my-16">
+  <!-- Product Image Carousel or Single Image -->
+  <div class="w-full rounded-lg overflow-hidden mb-6">
+    <img src="{{productImage()}}" alt="Product Image" class="w-full h-64 object-cover">
+  </div>
+
+  <!-- Product Details -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+    <!-- Product Name & Farmer Info -->
+    <div>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-1">{{ productName() }}</h2>
+      <div class="flex items-center gap-2">
+        <img [src]="productDealerPhoto()" alt="Farmer Photo" class="w-10 h-10 rounded-full border-2 border-gray-300">
+        <div> 
+          <p class="text-gray-600 font-medium">{{ (productDealerFirstName() ?? '' )+ ' ' + (productDealerLastName() ?? '')}}</p>
+          <div class="flex items-center text-yellow-500">
+            <span class="text-sm font-semibold">{{ productDealerRating() }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-4 h-4">
+              <path d="M12 .587l3.668 7.568L24 9.423l-6 5.84 1.418 8.38L12 18.896l-7.418 4.747L6 15.263 0 9.423l8.332-1.268z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Price -->
+    <div class="mt-4 md:mt-0 text-lg font-semibold text-green-600">
+      {{productPrice() | currency: 'INR'}} / {{productUnit()}}
+    </div>
+  </div>
+
+  <!-- Product Description with Read More -->
+  <div class="mt-6">
+    <p class="text-gray-600">
+      {{ expanded ? productDescription() : (productDescription() | slice:0:100) + '...' }}
+      <button (click)="expanded = !expanded" class="text-blue-500 underline">
+        {{ expanded ? 'Read less' : 'Read more' }}
+      </button>
+    </p>
+  </div>
+
+  <!-- Quantity Selection -->
+  <div class="mt-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-2">Select Quantity</h3>
+    <div class="flex gap-3">
+
+      @for(qty of quantityOptions;track $index){
+        <button  
+                (click)="selectQuantity(qty)"
+                [class.bg-green-500]="selectedQuantity() === qty"
+                [class.text-white]="selectedQuantity() === qty"
+                class="border-2 border-gray-300 rounded-lg py-1 px-4 text-gray-800">
+          {{ qty }} kg
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Add to Cart Button -->
+  <div class="mt-8 flex items-center justify-between">
+    <div class="text-xl font-semibold text-gray-800">
+      Total: {{ calculateTotalPrice().toFixed(2) | currency : 'INR' }}
+    </div>
+    <button class="bg-green-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700" (click)="addToCart()">
+      Add to Cart
+    </button>
+  </div>
+</div>
+
+<app-toast />

@@ -1,0 +1,65 @@
+<div class="px-4 py-6">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold">Our Best Farmers</h2>
+    </div>
+  
+    <!-- Carousel Section -->
+    <div class="relative container overflow-hidden  mx-auto">
+      <div class="flex animate-marquee space-x-6">
+        <!-- Loop through the farmers list twice to create the seamless loop effect -->
+
+        @for(farmer of farmers;track farmer.id){
+          <div class="flex-none w-32 flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md transform transition-all hover:scale-105 duration-300">
+            <!-- Circular Image -->
+            <img [src]="farmer.image" alt="{{farmer.firstname + farmer.lastname}}"
+                 class="w-16 h-16 rounded-full object-cover border-2 border-gray-200 mb-2" />
+    
+            <!-- Farmer Name in Initials Format -->
+            <h3 class="text-sm font-semibold text-gray-800">{{farmer.firstname + ' '+ farmer.lastname}}</h3>
+    
+            <!-- Rating with Star Icon -->
+            <div class="flex items-center text-sm mt-1">
+              <span class="text-yellow-500">⭐</span>
+              <span class="ml-1 font-medium">{{ farmer.rating }}</span>
+            </div>
+          </div>
+        }
+        @for(farmer of farmers;track farmer.id){
+          <div class="flex-none w-32 flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md transform transition-all hover:scale-105 duration-300">
+            <!-- Circular Image -->
+            <img [src]="farmer.image" alt="{{farmer.firstname + ' ' + farmer.lastname}}"
+                 class="w-16 h-16 rounded-full object-cover border-2 border-gray-200 mb-2" />
+    
+            <!-- Farmer Name in Initials Format -->
+            <h3 class="text-sm font-semibold text-gray-800">{{farmer.firstname +' '+ farmer.lastname}}</h3>
+    
+            <!-- Rating with Star Icon -->
+            <div class="flex items-center text-sm mt-1">
+              <span class="text-yellow-500">⭐</span>
+              <span class="ml-1 font-medium">{{ farmer.rating }}</span>
+            </div>
+          </div>
+        }
+        @for(farmer of farmers;track farmer.id){
+          <div class="flex-none w-32 flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md transform transition-all hover:scale-105 duration-300">
+            <!-- Circular Image -->
+            <img [src]="farmer.image" alt="{{farmer.firstname + farmer.lastname}}"
+                 class="w-16 h-16 rounded-full object-cover border-2 border-gray-200 mb-2" />
+    
+            <!-- Farmer Name in Initials Format -->
+            <h3 class="text-sm font-semibold text-gray-800">{{ farmer.firstname +' '+ farmer.lastname}}</h3>
+    
+            <!-- Rating with Star Icon -->
+            <div class="flex items-center text-sm mt-1">
+              <span class="text-yellow-500">⭐</span>
+              <span class="ml-1 font-medium">{{ farmer.rating }}</span>
+            </div>
+          </div>
+        }
+  
+        <!-- Duplicate the farmers list for seamless scrolling -->
+      </div>
+    </div>
+  </div>
+  

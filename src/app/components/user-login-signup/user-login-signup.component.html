@@ -1,0 +1,226 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-lg overflow-hidden my-8">
+      <!-- Tabs -->
+      <div class="flex border-b">
+        <button
+          class="flex-1 text-center py-3 font-medium"
+          [class.text-blue-500]="isLoginTab"
+          [class.text-gray-500]="!isLoginTab"
+          [class.border-b-2]="isLoginTab"
+          [class.border-blue-500]="isLoginTab"
+          (click)="setTab('login')"
+        >
+          Login
+        </button>
+        <button
+          class="flex-1 text-center py-3 font-medium"
+          [class.text-blue-500]="!isLoginTab"
+          [class.text-gray-500]="isLoginTab"
+          [class.border-b-2]="!isLoginTab"
+          [class.border-blue-500]="!isLoginTab"
+          (click)="setTab('signup')"
+        >
+          Signup
+        </button>
+      </div>
+  
+      <!-- Login Form -->
+       @if(isLoginTab){
+           <div  class="p-6">
+             <h2 class="text-2xl font-bold text-center text-blue-600">Login</h2>
+             <form (ngSubmit)="login()" class="mt-4">
+               <div class="mb-4">
+                 <label for="loginEmail" class="block text-gray-600 mb-1">Email</label>
+                 <input
+                   id="loginEmail"
+                   type="email"
+                   [(ngModel)]="loginForm.email"
+                   name="loginEmail"
+                   required
+                   #userEmail="ngModel"
+                   email
+                   placeholder="Enter your email"
+                   class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                   (change)="onFormChange()"
+                 />
+
+                 @if(userEmail.errors?.['email'] && userEmail.touched){
+                  <div class="text-sm text-red-500">
+                    Please enter a valid email address.
+                  </div>
+                 }
+               </div>
+               <div class="mb-4">
+                 <label for="loginPassword" class="block text-gray-600 mb-1">Password</label>
+                 <div class="relative">
+                   
+                   <input
+                     id="loginPassword"
+                     [type]="showLoginPassword ? 'text' : 'password'"
+                     [(ngModel)]="loginForm.password"
+                     name="loginPassword"
+                     required
+                     placeholder="Enter your password"
+                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                     minlength="8"
+                     #password="ngModel"
+                     (change)="onFormChange()"
+                   />
+                   <button
+                     type="button"
+                     class="absolute right-3 top-2 text-gray-500 hover:text-gray-800"
+                     (click)="togglePasswordVisibility('login')"
+                   >
+                     <i [class]="showLoginPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+                   </button>
+                 </div>
+
+                 @if(password.errors?.['minlength'] && password.touched){
+                  <div  class="text-sm text-red-500">
+                      Password must be at least 8 characters long.
+                  </div>
+               }
+               </div>
+               <button
+                 type="submit"
+                 class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+               >
+                 Login
+               </button>
+             </form>
+
+             <p class="mt-4 text-sm text-center">
+              Don't have an account?
+              <button
+                type="button"
+                (click)="switchForm('signup')"
+                class="text-green-500 hover:underline"
+              >
+                Sign up
+              </button>
+            </p>
+           </div>
+
+       }@else {
+           <div class="p-6 ">
+             <h2 class="text-2xl font-bold text-center text-blue-600">Signup</h2>
+      
+            <!-- Farmer Signup Form -->
+              <form class="mt-4">
+                <div class="mb-4">
+                  <label for="userFirstName" class="block text-gray-600 mb-1">First Name</label>
+                  <input
+                    id="userFirstName"
+                    type="text"
+                    [(ngModel)]="userForm.firstname"
+                    name="userFirstName"
+                    required
+                    placeholder="Enter first name"
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    (change)="onFormChange()"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label for="userLastName" class="block text-gray-600 mb-1">Last Name</label>
+                  <input
+                    id="userLastName"
+                    type="text"
+                    [(ngModel)]="userForm.lastname"
+                    name="userLastName"
+                    required
+                    placeholder="Enter last name"
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    (change)="onFormChange()"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label for="userAgeGroup" class="block text-gray-600 mb-1">Age Group</label>
+                  <input
+                    id="userAgeGroup"
+                    type="text"
+                    [(ngModel)]="userForm.ageGroup"
+                    name="userAgeGroup"
+                    required
+                    placeholder="Enter age group"
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    (change)="onFormChange()"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label for="userAgeGroup" class="block text-gray-600 mb-1">Email Address</label>
+                  <input
+                    id="userEmail"
+                    type="email"
+                    [(ngModel)]="userForm.email"
+                    name="userEmail"
+                    required
+                    placeholder="Ex: doejohn@example.com"
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    (change)="onFormChange()"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-600 mb-1">Gender</label>
+                  <select
+                    [(ngModel)]="userForm.gender"
+                    name="userGender"
+                    required
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    (change)="onFormChange()"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="mb-4">
+
+                  <label for="userPassword" class="block text-gray-600 mb-1">Password</label>
+
+                  <div class="relative">
+                    
+                    <input
+                      id="loginPassword"
+                      [type]="showLoginPassword ? 'text' : 'password'"
+                      [(ngModel)]="userForm.password"
+                      name="userPassword"
+                      required
+                      placeholder="Enter your password"
+                      class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                      minlength="8"
+                      #password="ngModel"
+                      (change)="onFormChange()"
+                    />
+                    <button
+                      type="button"
+                      class="absolute right-3 top-2 text-gray-500 hover:text-gray-800"
+                      (click)="togglePasswordVisibility('login')"
+                    >
+                      <i [class]="showLoginPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+                    </button>
+
+
+                  </div>
+                  @if(password.errors?.['minlength'] && password.touched){
+                    <div class="text-sm text-red-500">
+                      Password must be at least 8 characters long.
+                    </div>
+                  }
+                   
+                </div>
+                <button
+                  type="button"
+                  class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+
+                  (click)="signup()"
+                >
+                  Signup
+                </button>
+              </form>
+          </div>
+       }
+  
+    </div>
+  </div>
+  

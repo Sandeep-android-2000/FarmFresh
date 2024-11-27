@@ -1,0 +1,196 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+  <!-- Profile Section -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col items-center">
+      <div class="relative">
+
+        @if(farmerDetails.image){
+        <img [src]="farmerDetails.image" alt="Farmer" class="w-24 h-24 rounded-full object-cover mb-4" />
+        }@else {
+        <div class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-lg">
+          {{ farmerDetails.firstname }} {{ farmerDetails.lastname }}
+        </div>
+        }
+        <label
+          class="absolute bottom-2 right-2 bg-blue-500 text-white p-2 rounded-full cursor-pointer hover:bg-blue-600">
+          <input type="file" accept="image/*" class="hidden" (change)="uploadProfilePhoto($event)" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 11a4 4 0 100-8 4 4 0 000 8zM8 14a6 6 0 0112 0M4 20h16" />
+          </svg>
+        </label>
+      </div>
+      <h2 class="text-lg font-bold">{{ farmerDetails.firstname }} {{ farmerDetails.lastname }}</h2>
+      <p class="text-sm text-gray-500">{{ farmerDetails.gender }}, {{ farmerDetails.age }} years</p>
+      <p class="text-sm text-yellow-500">⭐ {{ farmer.rating }}</p>
+      <button (click)="editProfile()" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        Edit Profile
+      </button>
+    </div>
+
+    <!-- Vegetable Upload Section -->
+    <div class="bg-white shadow-md rounded-lg p-6 col-span-2">
+      <h2 class="text-lg font-bold mb-4">Upload Vegetables</h2>
+      @for(veg of vegetables;track veg.id){
+      <div class="flex items-center mb-4">
+        <img [src]="veg.image" alt="{{ veg.name }}" class="w-16 h-16 rounded object-cover mr-4" />
+        <div>
+          <p class="text-sm font-semibold">{{ veg.name }}</p>
+          <p class="text-sm text-gray-500">{{ veg.unit }} - ₹{{ veg.price }}</p>
+          <p class="text-sm text-gray-400">{{ veg.description }}</p>
+        </div>
+      </div>
+      }
+      <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" (click)="openVegetableUploadModal()">
+        Add New Vegetable
+      </button>
+
+      @if(isVegetableUploadModalOpen){
+
+        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <!-- Modal content -->
+          <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+            <!-- Close button -->
+            <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-800" (click)="closeVegetableUploadModal()">
+              &times;
+            </button>
+  
+            <!-- Modal header -->
+            <h2 class="text-xl font-bold mb-4 text-center">Add New Vegetable</h2>
+  
+            <!-- Form fields -->
+            <form (ngSubmit)="submitVegetable()">
+              <div class="mb-4">
+                <label for="name" class="block text-sm font-medium">Name</label>
+                <input type="text" id="name" [(ngModel)]="newVegetable.name" name="name"
+                  class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-300"
+                  required />
+              </div>
+  
+              <div class="mb-4">
+                <label for="price" class="block text-sm font-medium">Price</label>
+                <input type="number" id="price" [(ngModel)]="newVegetable.price" name="price"
+                  class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-300"
+                  required />
+              </div>
+  
+              <div class="mb-4">
+                <label for="unit" class="block text-sm font-medium">Unit</label>
+                <select id="unit" [(ngModel)]="newVegetable.unit" name="unit"
+                  class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-300"
+                  required>
+                  <option value="500g">500g</option>
+                  <option value="1kg">1kg</option>
+                  <option value="2kg">2kg</option>
+                </select>
+              </div>
+  
+              <div class="mb-4">
+                <label for="image" class="block text-sm font-medium">Image</label>
+                <input type="file" id="image" (change)="handleImageUpload($event)"
+                  class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-300" />
+              </div>
+  
+              <div class="mb-4">
+                <label for="description" class="block text-sm font-medium">Description</label>
+                <textarea id="description" [(ngModel)]="newVegetable.description" name="description" rows="3"
+                  class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-300"
+                  required></textarea>
+              </div>
+  
+              <!-- Submit button -->
+              <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+
+  <!-- Sales Tracking Section -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+    <h2 class="text-lg font-bold mb-4">Sales Tracking</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Pie Chart: Vegetable Sales -->
+      <div class="w-full h-64 flex justify-center items-center">
+        <canvas id="vegetableSalesChart"></canvas>
+      </div>
+      <!-- Line Chart: Monthly Sales -->
+      <div class="w-full h-64 flex justify-center items-center">
+        <canvas id="monthlySalesChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Customer Orders Section -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+    <h2 class="text-lg font-bold mb-4">Customer Orders</h2>
+    <table class="w-full text-left">
+      <thead>
+        <tr class="text-sm font-semibold text-gray-500">
+          <th class="p-2">Order ID</th>
+          <th class="p-2">Customer</th>
+          <th class="p-2">Item</th>
+          <th class="p-2">Quantity</th>
+          <th class="p-2">Total</th>
+          <th class="p-2">Status</th>
+          <th class="p-2">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(order of customerOrders;track order.id){
+        <tr [class.bg-green-100]="order.status === 'Fulfilled'" [class.bg-red-100]="order.status === 'Pending'"
+          class="text-sm">
+          <td class="p-2">{{ order.id }}</td>
+          <td class="p-2">{{ order.customer }}</td>
+          <td class="p-2">{{ order.item }}</td>
+          <td class="p-2">{{ order.quantity }}</td>
+          <td class="p-2">₹{{ order.total }}</td>
+          <td class="p-2">
+            <span [class.text-green-600]="order.status === 'Fulfilled'"
+              [class.text-red-600]="order.status === 'Pending'" class="font-semibold">
+              {{ order.status }}
+            </span>
+          </td>
+          <td class="p-2">
+            @if(order.status === 'Pending'){
+            <button (click)="completeOrder(order.id)"
+              class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+              Complete
+            </button>
+            }@else if(order.status === 'Fulfilled'){
+            <span class="text-gray-500 text-sm italic">
+              Completed
+            </span>
+            }
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Government Schemes Modal -->
+  @if(isGovernmentSchemeModalOpen){
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-3/4 md:w-1/2">
+      <h2 class="text-lg font-bold mb-4">Government Schemes</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @for(scheme of governmentSchemes;track $index){
+        <div class="p-4 bg-gray-100 rounded">
+          {{ scheme.details }}
+        </div>
+        }
+      </div>
+      <button (click)="closeGovernmentSchemeModal()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+        Close
+      </button>
+    </div>
+  </div>
+  }
+</div>

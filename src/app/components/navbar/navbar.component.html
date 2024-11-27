@@ -1,0 +1,196 @@
+<nav class="border-b border-gray-200 bg-white fixed z-[10000] right-0 left-0 top-0">
+  <!-- Top Bar -->
+  <div class="max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo and Location -->
+      <div class="flex items-center gap-6">
+        <!-- Logo -->
+        <div class="flex items-center justify-center gap-2"
+          [ngClass]="{'scale-75': size === 'small', 'scale-150': size === 'large'}">
+          <!-- Icon -->
+          <div class="relative">
+            <!-- Leaf Shape -->
+            <div
+              class="w-8 h-8 relative rounded-tr-full rounded-bl-full bg-green-500 rotate-45 relative overflow-hidden">
+              <!-- Stem -->
+            </div>
+
+            <!-- Second Leaf -->
+            <div class="absolute w-6 h-6 rounded-tr-full rounded-bl-full bg-green-400 rotate-12 -top-1 -right-1">
+            </div>
+          </div>
+
+
+          <!-- Text -->
+
+          @if(showText){
+          <div class="flex flex-col">
+            <span class="text-2xl font-bold tracking-tight">
+              <span class="text-green-600">Farm</span>
+              <span class="text-green-700">Fresh</span>
+            </span>
+            <span class="text-xs text-green-600 -mt-1 tracking-widest">Sell Fresh, Sell Direct</span>
+          </div>
+          }
+        </div>
+
+        <!-- Location Selector -->
+        <div class="hidden md:flex items-center gap-2 cursor-pointer hover:text-green-600">
+          <div>
+            <div class="text-sm font-semibold">Delivery in 8 minutes</div>
+            <div class="text-xs text-gray-500">B62, Pocket B, South City I, Sect...</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Search and Account -->
+      <div class="flex items-center gap-4 flex-1 max-w-2xl ml-6 ">
+        <!-- Search Bar -->
+        <div class="flex-1 relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <input type="text" placeholder='Search'
+            class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600
+            w-[{{isSearchExpanded ? 'w-w-screen' : '150px'}}]"
+            [(ngModel)]="searchQuery" (focus)="expandSearchBar()" (blur)="collapseSearchBar()"
+            (keyup.enter)="performSearch()">
+        </div>
+
+        <!-- Account -->
+        <div class="flex items-center gap-4">
+          <!-- Account Dropdown -->
+          <div class="relative">
+            <button (click)="toggleAccountMenu()"
+              class="flex items-center text-sm font-medium text-gray-700 hover:text-green-600">
+              Account
+              <i class="fas fa-caret-down ml-1"></i>
+            </button>
+            <!-- Overlay -->
+            @if(isAccountMenuOpen){
+            <div class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="toggleAccountMenu()"></div>
+            <!-- Dropdown Menu -->
+            <div class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-50">
+              <div class="p-4 border-b">
+                <h3 class="text-sm font-semibold">My Account</h3>
+              </div>
+              <ul class="py-2">
+                <li class="px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer">My Orders</li>
+                <li class="px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer">Saved Address</li>
+                <li class="px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer">E-Gift Cards</li>
+                <li class="px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer">FAQ's</li>
+                <li class="px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer">Account Privacy</li>
+                <li class="px-4 py-2 hover:bg-gray-100 text-red-600 cursor-pointer">Log Out</li>
+              </ul>
+              <div class="p-4 border-t">
+                <div class="flex items-center">
+                  <div>
+
+                    <img src="qr-code.png" alt="QR Code" class="w-full h-full object-cover mr-3">
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm text-gray-700">Simple way to get groceries</p>
+                    <p class="text-sm text-green-600 font-medium">in minutes</p>
+                    <p class="text-xs text-gray-400">Scan the QR code to download the app</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+
+          <!-- Cart Button -->
+          <button class="flex items-center bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+            (click)="toggleCartViewOpen()">
+            <i class="fas fa-shopping-cart mr-2"></i>
+            My Cart
+          </button>
+
+          <!-- Overlay -->
+          @if(isCartViewOpen){
+          <div class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="toggleCartViewOpen()"></div>
+
+          }
+
+          <div
+            class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform transition-transform duration-300 z-50"
+            [ngClass]="{ 'translate-x-0': isCartViewOpen, 'translate-x-full': !isCartViewOpen }">
+            <!-- Cart Header -->
+            <div class="flex justify-between items-center px-4 py-2 border-b">
+              <h3 class="text-lg font-semibold">My Cart</h3>
+              <button (click)="toggleCartViewOpen()" class="text-gray-500 hover:text-red-600">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </button>
+            </div>
+
+            <!-- Delivery Info -->
+            <div class="p-4 bg-gray-100">
+              <div class="flex items-center gap-3">
+                <div class="text-green-600">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <div>
+                  <h4 class="text-sm font-medium">Delivery in 8 minutes</h4>
+                  <p class="text-xs text-gray-500">
+                    Shipment of {{ cartItems.length === 1 ? '1 item' : cartItems.length + ' items' }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cart Items -->
+            <div class="p-4 space-y-4">
+              <div *ngFor="let item of cartItems" class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <img [src]="item.image" alt="Item Image" class="w-12 h-12 object-cover rounded" />
+                  <div>
+                    <h4 class="text-sm font-medium">{{ item.name }}</h4>
+                    <p class="text-xs text-gray-500">{{ item.quantity }}kg</p>
+                    <p class="text-sm font-semibold text-gray-700">Rate: {{ item.price | currency : 'INR'
+                      }}/{{item.unit}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bill Details -->
+            <div class="p-4 bg-gray-100 space-y-2">
+              <div class="flex justify-between text-sm">
+                <span>Items total</span>
+                <span>{{ calculateItemsTotal(cartItems) | currency : 'INR' }}</span>
+              </div>
+              <div class="flex justify-between text-sm text-gray-500">
+                <span>Delivery charge</span>
+                <span>{{ calculateDeliveryCharge() | currency : 'INR' }}</span>
+              </div>
+              <div class="flex justify-between text-sm text-gray-500">
+                <span>Handling charge</span>
+                <span>{{ calculateHandlingCharge() | currency : 'INR' }}</span>
+              </div>
+              <div class="flex justify-between text-sm font-semibold">
+                <span>Grand total</span>
+                <span>{{ calculateGrandTotal() | currency : 'INR'}}</span>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-4 bg-white flex justify-between items-center border-t">
+              <!-- <div class="text-green-600 font-bold">{{ calculateGrandTotal() | currency : 'INR'}} TOTAL</div> -->
+              <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                Proceed
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+</nav>
